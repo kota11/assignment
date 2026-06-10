@@ -1,7 +1,7 @@
 import { api } from "./client";
 
 export async function fetchRecords(params: any) {
-  const response = await api.get("/records", { params });
+  const response = await api.get("records", { params });
 
   return {
     rows: response.data,
@@ -10,6 +10,6 @@ export async function fetchRecords(params: any) {
 }
 
 export async function updateRecord(id: string | number, payload: any) {
-  const response = await api.patch(`/records/${id}`, payload);
+  const response = await api.patch(`records/${id}`, payload);
   return response.data;
 }
