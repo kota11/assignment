@@ -97,33 +97,33 @@ function TablePage() {
     ],
 
     queryFn: async () => {
-      const sort = sorting[0];
+  const sort = sorting[0];
 
-      return fetchRecords({
-        _page:
-          pagination.pageIndex + 1,
+  const params: any = {
+    _page: pagination.pageIndex + 1,
+    _limit: pagination.pageSize,
+    q: debouncedSearch,
+  };
 
-        _limit:
-          pagination.pageSize,
+  if (sort?.id) {
+    params._sort = sort.id;
+    params._order = sort.desc ? "desc" : "asc";
+  }
 
-        _sort: sort?.id,
+  if (genreFilter) {
+    params.playlist_genre = genreFilter;
+  }
 
-        _order: sort?.desc
-          ? "desc"
-          : "asc",
+  if (minPopularity) {
+    params.track_popularity_gte = minPopularity;
+  }
 
-        q: debouncedSearch,
+  if (maxPopularity) {
+    params.track_popularity_lte = maxPopularity;
+  }
 
-        playlist_genre:
-          genreFilter || undefined,
-
-        track_popularity_gte:
-          minPopularity || undefined,
-
-        track_popularity_lte:
-          maxPopularity || undefined,
-      });
-    },
+  return fetchRecords(params);
+}
   });
 
   const columns = useMemo<
