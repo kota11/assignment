@@ -1,16 +1,29 @@
-import { api } from "./client";
-
-const ENDPOINT = "records";
-
 export async function fetchRecords(params: any) {
-  const response = await api.get(ENDPOINT, { params });
+  const query = new URLSearchParams(params).toString();
+
+  const res = await fetch(
+    `https://backend-22xf.onrender.com/records?${query}`
+  );
+
+  const data = await res.json();
 
   return {
-    rows: response.data,
-    total: Number(response.headers["x-total-count"] || 30000),
+    rows: data,
+    total: 30000,
   };
 }
 
 export async function updateRecord(id: string | number, payload: any) {
-  return api.patch(`${ENDPOINT}/${id}`, payload);
+  const res = await fetch(
+    `https://backend-22xf.onrender.com/records/${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+
+  return res.json();
 }
